@@ -17,4 +17,16 @@ control
 --no-binary=h5py h5py
 ray[rllib]
 torch #==1.10.0
-tensorboard
+tensorboardbranca
+folium>=0.12.0
+pygmsh<=6.1.1
+geojson
+meshio
+gmsh
+MeshPy
+pooch
+pygmsh
+rasterio
+shapely
+tqdm
+xarray
