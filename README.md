@@ -42,7 +42,25 @@ Before you do that, make sure that the following software is available in your s
 ```bash
 build-essential, autoconf, automake, bison, flex, cmake, gfortran, git, libtool, python3-dev, python3-pip, python3-tk, python3-venv, zlib1g-dev, libboost-dev 
 ```
+Then you can build all dependencies using the `setup.sh` script:
+```bash
+Usage:
+  bash ./setup.sh <INSTALL_PATH> [options]
 
+Options:
+  --complex                 Build firedrake-complex
+  --use-preinstalled-mpi    Use preinstalled MPI version
+                            (Make sue that mpicc, mpicxx, mpif90, mpiexec are defined)
+```
+Please keep in mind that the building process may take an hour or more (depending on your system).
+Once the script has finished, the first thing to do is activate the virtual environment where all of the important packages are installed with
+```bash
+source <INSTALL_PATH>/firedrake/bin/activate
+```
+or in case of firedrake-complex:
+```bash
+source <INSTALL_PATH>/firedrake-complex/bin/activate
+```
 
 ## Example
 After installation you can get running in the interpreter as easy as:
