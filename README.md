@@ -18,6 +18,7 @@ HydroGym provides is an open-source library of challenge problems in data-driven
 
 # Quick Start
 
+## Docker Installation
 The easiest way to get started is with the Docker container.  Assuming you have [Docker installed](https://docs.docker.com/get-docker/), you can build and launch the image easily with the scripts in the `docker` folder:
 
 ```bash
@@ -35,8 +36,16 @@ source $VENV/bin/activate
 
 If you try to run something and get an error like "python: command not found" you probably missed this step.
 
-Then you can get running in the interpreter as easy as:
+## Native Installation
+Alternatively, you can use hydrogym without docker by installing the required dependencies into a local folder.
+Before you do that, make sure that the following software is available in your system:
+```bash
+build-essential, autoconf, automake, bison, flex, cmake, gfortran, git, libtool, python3-dev, python3-pip, python3-tk, python3-venv, zlib1g-dev, libboost-dev 
+```
 
+
+## Example
+After installation you can get running in the interpreter as easy as:
 
 ```python
 import hydrogym as gym
