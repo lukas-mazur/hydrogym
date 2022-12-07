@@ -1,38 +1,30 @@
 #!/usr/bin/env bash
 
 
-# module load toolchain/foss/2021b
-# module load devel/Autoconf/2.71-GCCcore-11.2.0
-# module load devel/Automake/1.16.4-GCCcore-11.2.0
-# module load devel/Autotools/20210726-GCCcore-11.2.0
-# module load lang/Python/3.9.6-GCCcore-11.2.0-bare
-# module load lang/Bison/3.7.6-GCCcore-11.2.0
-# module load lang/flex/2.6.4-GCCcore-11.2.0
-# module load devel/CMake/3.22.1-GCCcore-11.2.0
-# module load mpi/OpenMPI/4.1.2-GCC-11.2.0
-# 
-# export CC=$(which mpicc)
-# export CXX=$(which mpicxx)
-
-
-
 if [ -z $1 ]; then
         echo "Usage:"
         echo "  bash ./setup.sh <INSTALL_PATH> [options]"
         echo ""
         echo "Options:"
-        echo "  -c    Build firedrake-complex"
+        echo "  --complex                 Build firedrake-complex"
+        echo "  --use-preinstalled-mpi    Use preinstalled MPI version" 
+        echo "                            (Make sue that mpicc, mpicxx, mpif90, mpiexec are defined)"
         exit 0
 fi
 
+BUILDNAME="firedrake"
+BUILDOPTION=""
 
-if [[ $2 == "-c" ]]; then
-    BUILDNAME="firedrake-complex"
-    BUILDOPTION="--complex"
-else
-    BUILDNAME="firedrake"
-    BUILDOPTION=""
-fi
+args=$(getopt -o ep: -l complex,use-preinstalled-mpi -n "$0" -- "$@") || exit
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -c|--complex) BUILDNAME="firedrake-complex"; BUILDOPTION="--complex"; shift 1;;
+        -m|--use-preinstalled-mpi) BUILDOPTION="--mpicc $(which mpicc) --mpicxx $(which mpicxx) --mpif90 $(which mpif90) --mpiexec $(which mpiexec) ${BUILDOPTION}"; shift 1;;
+        *) ARG1=$1; shift;;
+    esac
+done
+
 
 echo "Building ${BUILDNAME}"
 
@@ -46,13 +38,13 @@ if [[ "$python_available" == "False" ]]; then
 fi
 
 REPO_PATH=$(dirname $(readlink -f $0))
-INSTALL_PATH=$(dirname $(readlink -f $1))/$(basename $1)
+INSTALL_PATH=$(dirname $(readlink -f $ARG1))/$(basename $ARG1)
 mkdir -p ${INSTALL_PATH}/
 cd $INSTALL_PATH
 
 curl -O https://raw.githubusercontent.com/firedrakeproject/firedrake/master/scripts/firedrake-install
 
-PETSC_CONFIGURE_OPTIONS='--download-fftw=1' python3 firedrake-install --no-package-manager --disable-ssh --remove-build-files --pip-install scipy  --venv-name=${BUILDNAME} ${BUILDOPTION} --mpicc $(which mpicc) --mpicxx $(which mpicxx) --mpif90 $(which mpif90) --mpiexec $(which mpiexec) --honour-pythonpath
+PETSC_CONFIGURE_OPTIONS='--download-fftw=1' python3 firedrake-install --no-package-manager --disable-ssh --remove-build-files --pip-install scipy  --venv-name=${BUILDNAME} ${BUILDOPTION} --honour-pythonpath
 
 export LD_LIBRARY_PATH=${INSTALL_PATH}/${BUILDNAME}/src/petsc/default/lib/:$LD_LIBRARY_PATH
 
