@@ -54,7 +54,6 @@ FIREDRAKE_VENV=${INSTALL_PATH}/${BUILDNAME}
 bash -c ". ${FIREDRAKE_VENV}/bin/activate; firedrake-update --documentation-dependencies --tinyasm --slepc --install thetis --install gusto --install icepack --install irksome --install femlium" 
 bash -c ". ${FIREDRAKE_VENV}/bin/activate && pip install --upgrade pip setuptools"
 bash -c ". ${FIREDRAKE_VENV}/bin/activate && pip install -e ${REPO_PATH}"
-bash -c ". ${FIREDRAKE_VENV}/bin/activate && pip install -r ${REPO_PATH}/missing_requirements.txt"
 bash -c ". ${FIREDRAKE_VENV}/bin/activate && pip install -r ${REPO_PATH}/requirements.txt"
 bash -c ". ${FIREDRAKE_VENV}/bin/activate && jupyter nbextension enable --py widgetsnbextension --sys-prefix"
 
